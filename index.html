@@ -19,6 +19,7 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             border: 2px solid #56ab2f;
+            box-sizing: border-box;
         }
         label, select, input, textarea {
             display: block;
@@ -27,6 +28,7 @@
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         label {
             font-weight: bold;
@@ -54,6 +56,22 @@
             font-size: 14px;
             color: #666;
         }
+        @media (max-width: 600px) {
+            body {
+                margin: 10px;
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            label, select, input, textarea {
+                padding: 6px;
+            }
+            button {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
     </style>
     <script>
         let submittedMatches = new Set();
@@ -76,10 +94,10 @@
                 return;
             }
 
-            // Ensure only PDF files are uploaded
+            // Ensure only PDF or image files are uploaded
             const file = fileInput.files[0];
-            if (file.type !== "application/pdf") {
-                alert("Only PDF files are allowed for match form uploads.");
+            if (!["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
+                alert("Only PDF, JPEG, and PNG files are allowed for match form uploads.");
                 return;
             }
 
@@ -152,8 +170,8 @@
             <label for="notes">Extra Notes (Optional):</label>
             <textarea id="notes" rows="3"></textarea>
 
-            <label for="matchForm">Upload Match Form (PDF only):</label>
-            <input type="file" id="matchForm" accept="application/pdf" required>
+            <label for="matchForm">Upload Match Form (PDF, JPEG, or PNG only):</label>
+            <input type="file" id="matchForm" accept="application/pdf, image/jpeg, image/png" required>
 
             <button type="submit">Submit Scores</button>
         </form>
