@@ -97,7 +97,7 @@
             }
         }
 
-        .container {
+        .container, .login-container {
             max-width: 600px;
             background: white;
             padding: 20px 30px;
@@ -177,6 +177,19 @@
         }
     </style>
     <script>
+        const referees = {
+            "0726087843": "Brian Ndiku",
+            "0710438284": "James Kasusu",
+            "0707660319": "Patrick VAR",
+            "0701048610": "Nzamu",
+            "0795963729": "Matata",
+            "0741070730": "Pk",
+            "0713027838": "Nicholus",
+            "0111229329": "Stephen",
+            "0706644081": "Mwendwa",
+            "0700056001": "Mwanzia"
+        };
+
         let submittedMatches = new Set();
 
         function handleSubmit(event) {
@@ -191,13 +204,11 @@
                 return;
             }
 
-            // Ensure a file is uploaded
             if (fileInput.files.length === 0) {
                 alert("Please upload the official match form before submitting.");
                 return;
             }
 
-            // Ensure only PDF or image files are uploaded
             const file = fileInput.files[0];
             if (!["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
                 alert("Only PDF, JPEG, and PNG files are allowed for match form uploads.");
@@ -212,7 +223,7 @@
         function randomizeCards() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                const randomTime = Math.random() * 3000; // Random time between 0 and 3 seconds
+                const randomTime = Math.random() * 3000;
                 setTimeout(() => {
                     card.style.display = 'block';
                     setTimeout(() => {
@@ -222,14 +233,28 @@
             });
         }
 
+        function handleLogin(event) {
+            event.preventDefault();
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const refereeName = referees[phoneNumber];
+
+            if (refereeName) {
+                alert(`Welcome, ${refereeName}!`);
+                document.querySelector('.login-container').style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
+            } else {
+                alert("Invalid phone number. Please try again.");
+            }
+        }
+
         window.addEventListener('load', function() {
             setTimeout(function() {
                 document.querySelector('.preloader').style.display = 'none';
-                document.querySelector('.container').style.display = 'block';
-            }, 10000); // 10 seconds
+                document.querySelector('.login-container').style.display = 'block';
+            }, 10000);
 
             randomizeCards();
-            setInterval(randomizeCards, 5000); // Randomize cards every 5 seconds
+            setInterval(randomizeCards, 5000);
         });
     </script>
 </head>
@@ -239,6 +264,15 @@
         <div class="card yellow-card"></div>
         <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
         <h1>KKPL<span> Referee's Portal</span> <span class="dots"></span></h1>
+    </div>
+    <div class="login-container">
+        <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
+        <h2>Login</h2>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" required>
+            <button type="submit">Login</button>
+        </form>
     </div>
     <div class="container">
         <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
