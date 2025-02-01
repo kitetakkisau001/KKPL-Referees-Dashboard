@@ -55,6 +55,22 @@
             animation: dots 1s steps(5, end) infinite;
         }
 
+        .card {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .red-card {
+            background-color: red;
+        }
+
+        .yellow-card {
+            background-color: yellow;
+        }
+
         @keyframes dots {
             0%, 20% {
                 color: rgba(0,0,0,0);
@@ -192,18 +208,36 @@
             document.getElementById("scoreForm").reset();
         }
 
+        function randomizeCards() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const randomTime = Math.random() * 5000; // Random time between 0 and 5 seconds
+                setTimeout(() => {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, randomTime);
+                }, randomTime);
+            });
+        }
+
         window.addEventListener('load', function() {
             setTimeout(function() {
                 document.querySelector('.preloader').style.display = 'none';
                 document.querySelector('.container').style.display = 'block';
             }, 10000); // 10 seconds
+
+            randomizeCards();
+            setInterval(randomizeCards, 5000); // Randomize cards every 5 seconds
         });
     </script>
 </head>
 <body>
     <div class="preloader">
         <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
-        <h1>KKPL<span>Referee's Portal</span> <span class="dots"></span></h1>
+        <h1>KKPL<span> Referee's Portal</span> <span class="dots"></span></h1>
+        <div class="card red-card"></div>
+        <div class="card yellow-card"></div>
     </div>
     <div class="container">
         <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
