@@ -5,76 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KKPL Referees Score Submission Portal</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
             background: linear-gradient(to right, #a8e063, #56ab2f);
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
+
         .container {
             max-width: 600px;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border: 2px solid #56ab2f;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 10px solid #56ab2f;
             box-sizing: border-box;
-        }
-        label, select, input, textarea {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        label {
-            font-weight: bold;
-            color: #56ab2f;
-        }
-        button {
-            background: #56ab2f;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #3e8e41;
-        }
-        h2 {
             text-align: center;
-            color: #333;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        p {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-        }
+
         .logo {
             display: block;
             margin: 0 auto 20px;
             width: 100px;
             height: auto;
         }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #56ab2f;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input, select, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #56ab2f;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #3e8e41;
+        }
+
         @media (max-width: 600px) {
-            body {
-                margin: 10px;
-                padding: 10px;
-            }
             .container {
-                padding: 15px;
+                padding: 15px 20px;
             }
-            label, select, input, textarea {
-                padding: 6px;
-            }
-            button {
+
+            label, input, select, textarea {
                 padding: 8px;
+            }
+
+            button {
+                padding: 10px 15px;
                 font-size: 14px;
             }
         }
@@ -88,7 +106,7 @@
             const awayTeam = document.getElementById("awayTeam").value;
             const matchKey = homeTeam + " vs " + awayTeam;
             const fileInput = document.getElementById("matchForm");
-            
+
             if (submittedMatches.has(matchKey)) {
                 alert("Scores for this match have already been submitted!");
                 return;
@@ -121,13 +139,13 @@
         <form id="scoreForm" onsubmit="handleSubmit(event)">
             <label for="refereeName">Referee Name:</label>
             <input type="text" id="refereeName" required>
-            
+
             <label for="matchDate">Match Date:</label>
             <input type="date" id="matchDate" required>
-            
+
             <label for="venue">Match Venue:</label>
             <input type="text" id="venue" required>
-            
+
             <label for="homeTeam">Home Team:</label>
             <select id="homeTeam" required>
                 <option value="">Select Home Team</option>
@@ -144,7 +162,7 @@
                 <option>Katondo FC</option>
                 <option>Lung'u FC</option>
             </select>
-            
+
             <label for="awayTeam">Away Team:</label>
             <select id="awayTeam" required>
                 <option value="">Select Away Team</option>
@@ -161,19 +179,19 @@
                 <option>Katondo FC</option>
                 <option>Lung'u FC</option>
             </select>
-            
+
             <label for="homeScore">Home Team Score:</label>
             <input type="number" id="homeScore" required>
-            
+
             <label for="awayScore">Away Team Score:</label>
             <input type="number" id="awayScore" required>
 
             <label for="redCards">Red Cards (if any):</label>
             <input type="text" id="redCards" placeholder="Player details (optional)">
-            
+
             <label for="yellowCards">Yellow Cards (if any):</label>
             <input type="text" id="yellowCards" placeholder="Player details (optional)">
-            
+
             <label for="notes">Extra Notes (Optional):</label>
             <textarea id="notes" rows="3"></textarea>
 
