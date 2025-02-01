@@ -56,10 +56,11 @@
         }
 
         .card {
-            position: absolute;
             width: 50px;
             height: 70px;
             border-radius: 5px;
+            position: absolute;
+            top: 20%;
             display: none;
         }
 
@@ -211,7 +212,7 @@
         function randomizeCards() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                const randomTime = Math.random() * 3000; // Random time between 0 and 5 seconds
+                const randomTime = Math.random() * 3000; // Random time between 0 and 3 seconds
                 setTimeout(() => {
                     card.style.display = 'block';
                     setTimeout(() => {
@@ -234,10 +235,10 @@
 </head>
 <body>
     <div class="preloader">
-        <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
-        <h1>KKPL<span> Referee's Portal</span> <span class="dots"></span></h1>
         <div class="card red-card"></div>
         <div class="card yellow-card"></div>
+        <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
+        <h1>KKPL<span> Referee's Portal</span> <span class="dots"></span></h1>
     </div>
     <div class="container">
         <img src="https://shorturl.at/HnoLp" alt="KKPL Logo" class="logo">
