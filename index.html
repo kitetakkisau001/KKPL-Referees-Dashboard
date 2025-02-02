@@ -191,6 +191,7 @@
         };
 
         let submittedMatches = new Set();
+        let currentRefereeName = '';
 
         async function handleSubmit(event) {
             event.preventDefault();
@@ -229,7 +230,8 @@
                     alert("Scores and match form submitted successfully!");
                     document.getElementById("scoreForm").reset();
                 } else {
-                    alert("Failed to submit scores. Please try again.");
+                    const errorMessage = await response.text();
+                    alert(`Failed to submit scores. Error: ${errorMessage}`);
                 }
             } catch (error) {
                 console.error("Error submitting scores:", error);
@@ -257,8 +259,11 @@
 
             if (refereeName) {
                 alert(`Welcome, ${refereeName}!`);
+                currentRefereeName = refereeName;
                 document.querySelector('.login-container').style.display = 'none';
                 document.querySelector('.container').style.display = 'block';
+                document.getElementById("refereeName").value = refereeName;
+                document.getElementById("welcomeMessage").innerText = `Welcome ${refereeName} to:`;
             } else {
                 alert("Invalid phone number. Please try again.");
             }
@@ -293,11 +298,12 @@
     </div>
     <div class="container">
         <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrMbXwf4yaswX4lNicuZqzBfiU2Jy5jVEU3MS-XQiN9yzXKWUD65y5M0Ycn5HvMBVO9M3oZaq&amp;_nc_ohc=qmbNRZhR9L8Q7kNvgF3alu5&amp;_nc_zt=23&amp;_nc_ht=scontent-mba2-1.xx&amp;_nc_gid=AGY3AJ7kEAqk-MuDFiuuDYm&amp;oh=00_AYAvyX5ZGuhxuwtJe2HiZGvJjT_zRyDo8FqGV6y9JXQbiQ&amp;oe=67A41084" alt="KKPL Logo" class="logo">
+        <p id="welcomeMessage">Welcome to:</p>
         <h2>KKPL Referees Score Submission Portal</h2>
         <p>This portal is strictly for referees to submit official match results.</p>
         <form id="scoreForm" onsubmit="handleSubmit(event)">
             <label for="refereeName">Referee Name:</label>
-            <input type="text" id="refereeName" required>
+            <input type="text" id="refereeName" required readonly>
 
             <label for="matchDate">Match Date:</label>
             <input type="date" id="matchDate" required>
