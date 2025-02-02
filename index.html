@@ -6,177 +6,14 @@
     <title>KKPL Referees Score Submission Portal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, #a8e063, #56ab2f);
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: auto;
-        }
-
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            flex-direction: column;
-        }
-
-        .preloader .logo {
-            width: 100px;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        .preloader h1 {
-            font-size: 24px;
-            color: #56ab2f;
-            margin-bottom: 10px;
-        }
-
-        .preloader span {
-            color: #333;
-        }
-
-        .preloader .dots::after {
-            content: '...';
-            animation: dots 1s steps(5, end) infinite;
-        }
-
-        .card {
-            width: 50px;
-            height: 70px;
-            border-radius: 5px;
-            position: absolute;
-            top: 20%;
-            display: none;
-        }
-
-        .red-card {
-            background-color: red;
-        }
-
-        .yellow-card {
-            background-color: yellow;
-        }
-
-        @keyframes dots {
-            0%, 20% {
-                color: rgba(0,0,0,0);
-                text-shadow:
-                    .25em 0 0 rgba(0,0,0,0),
-                    .5em 0 0 rgba(0,0,0,0);
-            }
-            40% {
-                color: black;
-                text-shadow:
-                    .25em 0 0 rgba(0,0,0,0),
-                    .5em 0 0 rgba(0,0,0,0);
-            }
-            60% {
-                text-shadow:
-                    .25em 0 0 black,
-                    .5em 0 0 rgba(0,0,0,0);
-            }
-            80%, 100% {
-                text-shadow:
-                    .25em 0 0 black,
-                    .5em 0 0 black;
-            }
-        }
-
-        .container, .login-container {
-            max-width: 600px;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-top: 10px solid #56ab2f;
-            box-sizing: border-box;
-            text-align: center;
-            display: none;
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto 20px;
-            width: 100px;
-            height: auto;
-        }
-
-        h2 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            color: #56ab2f;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        input, select, textarea {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background: #56ab2f;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: #3e8e41;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px 20px;
-            }
-
-            label, input, select, textarea {
-                padding: 8px;
-            }
-
-            button {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-        }
+        /* Your CSS styles here */
     </style>
-    <script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("kr_97OQ5tjt_fqCG2");
+        })();
+
         const referees = {
             "0726087843": "Brian Ndiku",
             "0710438284": "James Kasusu",
@@ -216,27 +53,28 @@
                 return;
             }
 
-            const formData = new FormData(document.getElementById("scoreForm"));
-            formData.append("file", file);
+            const templateParams = {
+                refereeName: document.getElementById("refereeName").value,
+                matchDate: document.getElementById("matchDate").value,
+                venue: document.getElementById("venue").value,
+                homeTeam: homeTeam,
+                awayTeam: awayTeam,
+                homeScore: document.getElementById("homeScore").value,
+                awayScore: document.getElementById("awayScore").value,
+                redCards: document.getElementById("redCards").value,
+                yellowCards: document.getElementById("yellowCards").value,
+                notes: document.getElementById("notes").value
+            };
 
-            try {
-                const response = await fetch('http://localhost:3000/submit-score', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
+            emailjs.send("service_p8l6d0k", "template_eik0foy", templateParams)
+                .then(function(response) {
                     submittedMatches.add(matchKey);
                     alert("Scores and match form submitted successfully!");
                     document.getElementById("scoreForm").reset();
-                } else {
-                    const errorMessage = await response.text();
-                    alert(`Failed to submit scores. Error: ${errorMessage}`);
-                }
-            } catch (error) {
-                console.error("Error submitting scores:", error);
-                alert("An error occurred. Please try again.");
-            }
+                }, function(error) {
+                    console.error("Error submitting scores:", error);
+                    alert("An error occurred. Please try again.");
+                });
         }
 
         function randomizeCards() {
@@ -284,11 +122,11 @@
     <div class="preloader">
         <div class="card red-card"></div>
         <div class="card yellow-card"></div>
-        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrMbXwf4yaswX4lNicuZqzBfiU2Jy5jVEU3MS-XQiN9yzXKWUD65y5M0Ycn5HvMBVO9M3oZaq&amp;_nc_ohc=qmbNRZhR9L8Q7kNvgF3alu5&amp;_nc_zt=23&amp;_nc_ht=scontent-mba2-1.xx&amp;_nc_gid=AGY3AJ7kEAqk-MuDFiuuDYm&amp;oh=00_AYAvyX5ZGuhxuwtJe2HiZGvJjT_zRyDo8FqGV6y9JXQbiQ&amp;oe=67A41084" alt="KKPL Logo" class="logo">
+        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrM[...]
         <h1>KKPL<span> Referee's Portal</span> <span class="dots"></span></h1>
     </div>
     <div class="login-container">
-        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrMbXwf4yaswX4lNicuZqzBfiU2Jy5jVEU3MS-XQiN9yzXKWUD65y5M0Ycn5HvMBVO9M3oZaq&amp;_nc_ohc=qmbNRZhR9L8Q7kNvgF3alu5&amp;_nc_zt=23&amp;_nc_ht=scontent-mba2-1.xx&amp;_nc_gid=AGY3AJ7kEAqk-MuDFiuuDYm&amp;oh=00_AYAvyX5ZGuhxuwtJe2HiZGvJjT_zRyDo8FqGV6y9JXQbiQ&amp;oe=67A41084" alt="KKPL Logo" class="logo">
+        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrM[...]
         <h2>Login</h2>
         <form id="loginForm" onsubmit="handleLogin(event)">
             <label for="phoneNumber">Phone Number:</label>
@@ -297,7 +135,7 @@
         </form>
     </div>
     <div class="container">
-        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrMbXwf4yaswX4lNicuZqzBfiU2Jy5jVEU3MS-XQiN9yzXKWUD65y5M0Ycn5HvMBVO9M3oZaq&amp;_nc_ohc=qmbNRZhR9L8Q7kNvgF3alu5&amp;_nc_zt=23&amp;_nc_ht=scontent-mba2-1.xx&amp;_nc_gid=AGY3AJ7kEAqk-MuDFiuuDYm&amp;oh=00_AYAvyX5ZGuhxuwtJe2HiZGvJjT_zRyDo8FqGV6y9JXQbiQ&amp;oe=67A41084" alt="KKPL Logo" class="logo">
+        <img src="https://scontent-mba2-1.xx.fbcdn.net/v/t39.30808-6/474856669_572656402437673_1733062353303860700_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_eui2=AeHCtxhSjc-eR5EvrM[...]
         <p id="welcomeMessage">Welcome to:</p>
         <h2>KKPL Referees Score Submission Portal</h2>
         <p>This portal is strictly for referees to submit official match results.</p>
